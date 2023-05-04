@@ -1,3 +1,5 @@
+`include "decoder.v"
+
 module test_module;
 
     reg [2:0] inValue;

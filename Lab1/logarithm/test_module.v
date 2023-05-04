@@ -1,3 +1,6 @@
+`include "logarithm.v"
+`include "../decoder/decoder.v"
+
 module test_module;
 
     reg [2:0] inValue;
@@ -37,13 +40,5 @@ module test_module;
         $dumpfile("test.vcd");
         $dumpvars(0, test_module); //levels, top-module
     end
-
-endmodule
-
-module decoder(
-    input wire [2:0] inNumber,
-    output wire [7:0] outVector
-);
-    assign outVector = 8'b1 << inNumber;
 
 endmodule
