@@ -10,3 +10,5 @@ module logarithm (
             outNumber = i + 1;
     end
 endmodule
+
+//PS: вариант предложенный в методичке поприкольнее (5я лекция)
