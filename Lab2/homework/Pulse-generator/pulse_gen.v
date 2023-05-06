@@ -12,8 +12,8 @@ module pulse_gen(
 
     always @(clk) begin
         if(rst) begin
-            count <= countIn;
-            num <= 0;
+            count = countIn;
+            num = 0;
         end
         else begin
             num = num + 1;

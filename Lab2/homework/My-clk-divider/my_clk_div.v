@@ -11,9 +11,9 @@ module my_clk_div( //крутые челики сразу общий вариа�
 
     always @(clk) begin
         if(rst) begin
-            divCount <= divCountIn;
-            divReg <= 0;
-            div <= 0;
+            divCount = divCountIn;
+            divReg = 0;
+            div = 0;
         end
         else begin
             divReg = divReg + 1;
