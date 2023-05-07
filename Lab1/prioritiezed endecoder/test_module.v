@@ -7,6 +7,7 @@ module test_module;
     wire [7:0] midVector;
     reg [7:0] midVectorChanged;
     wire [2:0] outValue;
+    wire [2:0] outValueSecond;
 
     //Если p_encoder реализован правильно но inValue == outValue
 
@@ -20,6 +21,7 @@ module test_module;
         end     //остальные варианты перебирать лень, и так все понятно
 
     p_encoder p_encoder1(midVectorChanged, outValue);
+    p_encoder_second p_encoder_second1(midVectorChanged, outValueSecond);
 
     initial begin
         inValue = 4'b0;
@@ -28,10 +30,10 @@ module test_module;
     always @(inValue)
         begin
             #5
-            if(inValue  == outValue)
+            if((inValue  == outValue) && (inValue == outValueSecond))
                 $display("Success!");
             else
-                $display("Jopa!",, inValue,, outValue);
+                $display("Jopa!",, inValue,, outValue,,outValueSecond);
         end
 
     always
@@ -40,7 +42,7 @@ module test_module;
         end
 
     initial
-        $monitor(inValue,, midVector,, outValue);
+        $monitor(inValue,, midVector,, outValue,,outValueSecond);
 
     initial
         #300 $finish();
