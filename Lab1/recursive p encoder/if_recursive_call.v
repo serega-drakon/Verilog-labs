@@ -9,7 +9,6 @@ module if_recursive_call #(
         output wire [BOUT_SIZE - 1:0] outNumber
     );
 
-
     assign outNumberRec = (inVector[i] && (inNumber == 0)) ? i[BOUT_SIZE - 1 : 0] : inNumber;
 
     generate if(i > 0) begin : induction_step

@@ -8,14 +8,16 @@ module div_checker(
     output reg outValue
 );
 
-    integer i;
     reg [1:0] remainder;
     reg parity; // parity of power of two (0 - odd, 1 - even)
+    generate for(i = 0; i < 8; i = i + 1)
     always @(inNumber) begin
+
         remainder = 0;
         parity = `odd;
         // if odd remainder is 1 else (-1)
-        for(i = 0; i < 8; i = i + 1) begin  //FIXME: заменить на generate
+        begin : loop
+
             if(inNumber[i]) begin
                 if(parity == `odd) begin
                     remainder = remainder + `oddRmdr;
@@ -37,6 +39,7 @@ module div_checker(
         else
             assign outValue = 0;
     end
+    endgenerate
 
 endmodule
 
