@@ -7,7 +7,7 @@ module p_encoder_for(
     always @(inVector) begin
         outNumber = 7;
         for(i = 7; i > 0 && ~inVector[i]; i = i - 1) //подразумевается, что 1 когда нибудь встретится
-            outNumber = i - 1;// .. а эта хрень точно синтезируется?
+            outNumber = i - 1;// .. а эта хрень точно синтезируется? мб но интегер много весит
     end
 endmodule
 
