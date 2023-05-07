@@ -10,6 +10,7 @@ module div_checker(
 
     reg [1:0] remainder;
     reg parity; // parity of power of two (0 - odd, 1 - even)
+    genvar i;
     generate for(i = 0; i < 8; i = i + 1)
     always @(inNumber) begin
 
