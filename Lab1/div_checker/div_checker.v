@@ -15,7 +15,7 @@ module div_checker(
         remainder = 0;
         parity = `odd;
         // if odd remainder is 1 else (-1)
-        for(i = 0; i < 8; i = i + 1) begin
+        for(i = 0; i < 8; i = i + 1) begin  //FIXME: заменить на generate
             if(inNumber[i]) begin
                 if(parity == `odd) begin
                     remainder = remainder + `oddRmdr;
