@@ -10,12 +10,13 @@ module div_checker(
     assign count_even = inNumber[1] + inNumber[3] + inNumber[5] + inNumber[7];
 
     wire signed [4:0] reminder; //думаю ниче страшного если я использую signed
-    //операция вычитания = операция сложения но с поправкой на кодировку чисел
+    //операция вычитания = операция сложения с поправкой на кодировку чисел
     assign reminder = count_odd - count_even;
 
     assign outValue = (reminder == (-3) || reminder == 0 || reminder == 3) ? 1 : 0;
 
 endmodule
+
 
 module div_checker_2(   //если пояснить чисто на языке проводов
     input wire [7:0] inNumber,
