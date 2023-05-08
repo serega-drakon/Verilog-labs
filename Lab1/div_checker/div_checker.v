@@ -25,10 +25,10 @@ module div_checker_2(   //если пояснить чисто на языке �
 
     //разбиваем 8 бит на 4 по 2 бита и считаем остатки (избавляюсь от 2'b11 = 3 тк неудобно)
     wire [1:0] reminder_1 [3:0];
-    assign reminder_1[3] = (inNumber[7] && inNumber[6]) ? 2'b0 : inNumber[7:6];
-    assign reminder_1[2] = (inNumber[5] && inNumber[4]) ? 2'b0 : inNumber[5:4];
-    assign reminder_1[1] = (inNumber[3] && inNumber[2]) ? 2'b0 : inNumber[3:2];
-    assign reminder_1[0] = (inNumber[1] && inNumber[0]) ? 2'b0 : inNumber[1:0];
+    assign reminder_1[3] = (inNumber[7:6] == 2'b11) ? 2'b0 : inNumber[7:6];
+    assign reminder_1[2] = (inNumber[5:4] == 2'b11) ? 2'b0 : inNumber[5:4];
+    assign reminder_1[1] = (inNumber[3:2] == 2'b11) ? 2'b0 : inNumber[3:2];
+    assign reminder_1[0] = (inNumber[1:0] == 2'b11) ? 2'b0 : inNumber[1:0];
 
     //затем обьединяем соседние пары и считаем остатки
     wire [1:0] reminder_2 [1:0];
