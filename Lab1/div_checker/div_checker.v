@@ -1,29 +1,23 @@
-`define odd 1'b0
-`define even 1'b1
 `define oddRmdr 1
 `define evenRmdr 2
 
 module div_checker(
     input wire [7:0] inNumber,
-    output reg outValue
+    output wire outValue
 );
 
     reg [1:0] remainder;
-    reg parity; // parity of power of two (0 - odd, 1 - even)
     genvar i;
     generate for(i = 0; i < 8; i = i + 1)
     always @(inNumber) begin
-
         remainder = 0;
-        parity = `odd;
         // if odd remainder is 1 else (-1)
-        begin : loop
-
+         begin : loop
             if(inNumber[i]) begin
-                if(parity == `odd) begin
+                if(i % 2  == 0) begin : odd
                     remainder = remainder + `oddRmdr;
                 end
-                else begin
+                else begin : even
                     if(remainder == 2)  // problem with overflow
                         remainder = 1;
                     else
@@ -32,15 +26,11 @@ module div_checker(
                 if(remainder == 3)
                     remainder = 0;
             end
-            parity = ~parity;
         end
-
-        if(remainder == 0)
-            assign outValue = 1;
-        else
-            assign outValue = 0;
     end
     endgenerate
+
+    assign outValue = (remainder == 0) ? 1 : 0;
 
 endmodule
 
