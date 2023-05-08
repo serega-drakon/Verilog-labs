@@ -10,7 +10,7 @@ module test_module;
     end
 
     //для теста заменить модуль на требуемый
-    div_checker div_checker1(inNumber, outValue);
+    div_checker_2 div_checker1(inNumber, outValue);
 
     integer status = 0;
     always @(inNumber) begin //перебор остатков деления на 3
