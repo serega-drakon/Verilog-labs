@@ -10,6 +10,7 @@ module p_encoder_rec #(
     //пошло поехало...
     if_recursive_call #(.BOUT_SIZE(BOUT_SIZE),.i(BIN_SIZE - 1))
         if_rec_call1(.inVector(inVector),.inNumber({BOUT_SIZE{1'b0}}), .outNumber(outNumber));
+
 endmodule
 
 
