@@ -11,17 +11,16 @@ module logarithm (  //это моя первая версия
     end
 endmodule
 
-//PS: вариант предложенный в методичке поприкольнее (5я лекция)
-//PS PS: он не был предложен в методичке, мне показалось, когда я бегал глазами
-
-module logarithm_better(
-
-    input wire [7:0] inVector,
-    output reg [2:0] outNumber
+module logarithm_better #(
+    parameter BIN_SIZE = 8,
+    parameter BOUT_SIZE = 3
+)(
+    input wire [BIN_SIZE - 1:0] inVector,
+    output reg [BOUT_SIZE - 1:0] outNumber
 );
 
     genvar i; //а вот эта пропадет
-    generate for(i = 0; i < 8; i = i + 1)
+    generate for(i = 0; i < BIN_SIZE; i = i + 1)
     begin : loop
         always @(inVector)
             if(inVector[i])
