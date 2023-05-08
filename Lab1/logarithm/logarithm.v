@@ -38,7 +38,7 @@ module logarithm_better #( //Исправил
     output wire [BOUT_SIZE - 1:0] outNumber
 );
 
-    wire [BOUT_SIZE - 1:0] midNumber  [BIN_SIZE - 1:0];
+    wire [BOUT_SIZE - 1:0] midNumber [BIN_SIZE - 1:0];
     assign midNumber[0] = 0;
 
     genvar i;
