@@ -7,48 +7,50 @@
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/11.0/lib/ivl/vhdl_textio.vpi";
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/11.0/lib/ivl/v2005_math.vpi";
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/11.0/lib/ivl/va_math.vpi";
-S_0x134e046b0 .scope module, "test_module" "test_module" 2 1;
+S_0x1418042a0 .scope module, "test_module" "test_module" 2 3;
  .timescale 0 0;
-v0x6000010b82d0_0 .var "inValue", 2 0;
-v0x6000010b8360_0 .net "outValue", 7 0, L_0x6000013b8000;  1 drivers
-S_0x134e04820 .scope module, "decoder1" "decoder" 2 6, 3 1 0, S_0x134e046b0;
+v0x600002fcc2d0_0 .var "inValue", 2 0;
+v0x600002fcc360_0 .net "outValue", 7 0, L_0x600002ccc000;  1 drivers
+S_0x141804410 .scope module, "decoder1" "decoder" 2 8, 3 1 0, S_0x1418042a0;
  .timescale 0 0;
     .port_info 0 /INPUT 3 "inNumber";
     .port_info 1 /OUTPUT 8 "outVector";
-L_0x138060010 .functor BUFT 1, C4<00000001>, C4<0>, C4<0>, C4<0>;
-v0x6000010b8120_0 .net/2u *"_ivl_0", 7 0, L_0x138060010;  1 drivers
-v0x6000010b81b0_0 .net "inNumber", 2 0, v0x6000010b82d0_0;  1 drivers
-v0x6000010b8240_0 .net "outVector", 7 0, L_0x6000013b8000;  alias, 1 drivers
-L_0x6000013b8000 .shift/l 8, L_0x138060010, v0x6000010b82d0_0;
-    .scope S_0x134e046b0;
+P_0x6000033c8000 .param/l "BIN_SIZE" 0 3 2, +C4<00000000000000000000000000000011>;
+P_0x6000033c8040 .param/l "BOUT_SIZE" 0 3 3, +C4<00000000000000000000000000001000>;
+L_0x138040010 .functor BUFT 1, C4<00000001>, C4<0>, C4<0>, C4<0>;
+v0x600002fcc120_0 .net/2u *"_ivl_0", 7 0, L_0x138040010;  1 drivers
+v0x600002fcc1b0_0 .net "inNumber", 2 0, v0x600002fcc2d0_0;  1 drivers
+v0x600002fcc240_0 .net "outVector", 7 0, L_0x600002ccc000;  alias, 1 drivers
+L_0x600002ccc000 .shift/l 8, L_0x138040010, v0x600002fcc2d0_0;
+    .scope S_0x1418042a0;
 T_0 ;
     %delay 10, 0;
-    %load/vec4 v0x6000010b82d0_0;
+    %load/vec4 v0x600002fcc2d0_0;
     %addi 1, 0, 3;
-    %store/vec4 v0x6000010b82d0_0, 0, 3;
+    %store/vec4 v0x600002fcc2d0_0, 0, 3;
     %jmp T_0;
     .thread T_0;
-    .scope S_0x134e046b0;
+    .scope S_0x1418042a0;
 T_1 ;
     %pushi/vec4 0, 0, 3;
-    %store/vec4 v0x6000010b82d0_0, 0, 3;
+    %store/vec4 v0x600002fcc2d0_0, 0, 3;
     %end;
     .thread T_1;
-    .scope S_0x134e046b0;
+    .scope S_0x1418042a0;
 T_2 ;
-    %vpi_call 2 18 "$monitor", v0x6000010b82d0_0, " ", v0x6000010b8360_0 {0 0 0};
+    %vpi_call 2 20 "$monitor", v0x600002fcc2d0_0, " ", v0x600002fcc360_0 {0 0 0};
     %end;
     .thread T_2;
-    .scope S_0x134e046b0;
+    .scope S_0x1418042a0;
 T_3 ;
     %delay 300, 0;
-    %vpi_call 2 21 "$finish" {0 0 0};
+    %vpi_call 2 23 "$finish" {0 0 0};
     %end;
     .thread T_3;
-    .scope S_0x134e046b0;
+    .scope S_0x1418042a0;
 T_4 ;
-    %vpi_call 2 24 "$dumpfile", "test.vcd" {0 0 0};
-    %vpi_call 2 25 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x134e046b0 {0 0 0};
+    %vpi_call 2 26 "$dumpfile", "test.vcd" {0 0 0};
+    %vpi_call 2 27 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x1418042a0 {0 0 0};
     %end;
     .thread T_4;
 # The file index is used to find the file name in the following table.
@@ -56,4 +58,4 @@ T_4 ;
     "N/A";
     "<interactive>";
     "test_module.v";
-    "decoder.v";
+    "./decoder.v";

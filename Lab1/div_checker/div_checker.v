@@ -1,40 +1,18 @@
-`define oddRmdr 1
-`define evenRmdr 2
-
 module div_checker(
     input wire [7:0] inNumber,
     output wire outValue
 );
 
-    reg [1:0] remainder;
-    genvar i;
-    generate for(i = 0; i < 8; i = i + 1)
-    always @(inNumber) begin
-        remainder = 0;
-        // if odd remainder is 1 else (-1)
-         begin : loop
-            if(inNumber[i]) begin
-                if(i % 2  == 0) begin : odd
-                    remainder = remainder + `oddRmdr;
-                end
-                else begin : even
-                    if(remainder == 2)  // problem with overflow
-                        remainder = 1;
-                    else
-                        remainder = remainder + `evenRmdr;
-                end
-                if(remainder == 3)
-                    remainder = 0;
-            end
-        end
-    end
-    endgenerate
+    wire [2:0] count_odd;
+    wire [2:0] count_even;
 
-    assign outValue = (remainder == 0) ? 1 : 0;
+    assign count_odd = inNumber[0] + inNumber[2] + inNumber[4] + inNumber[6];
+    assign count_even = inNumber[1] + inNumber[3] + inNumber[5] + inNumber[7];
+
+    wire  [4:0] reminder;
+
+    assign reminder = count_odd + 2 * count_even;
+
+    assign outValue = (reminder == 0 || reminder == 3 || reminder == 6 || reminder == 9 || reminder == 12) ? 1 : 0;
 
 endmodule
-
-// хз мб там есть операция изьятия остатка из деления любых целых чисел,
-// но мне показалось, что раз нам дана именно тройка то можно использовать
-// математику для написания эффективного алгоритма, хоть он и может быть
-// менее читаемым

@@ -27,13 +27,13 @@ module test;
 
     reg [7:0] divCountIn;
     initial begin
-        divCountIn <= 8'd5;
-        #400 divCountIn <= 8'd6;
-        #400 divCountIn <= 8'd7;
+        divCountIn <= 8'd2;
+        #400 divCountIn <= 8'd3;
+        #400 divCountIn <= 8'd4;
     end
 
     always begin
-        #10 clk = ~clk;
+        #10 clk <= ~clk;
     end
 
     //module itself

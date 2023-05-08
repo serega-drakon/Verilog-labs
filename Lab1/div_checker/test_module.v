@@ -6,18 +6,19 @@ module test_module;
     wire outValue;
 
     always begin
-        #10 inNumber = inNumber+ 1;
+        #10 inNumber = inNumber + 1;
     end
 
     div_checker div_checker1(inNumber, outValue);
 
-    integer i = 0;
+    integer status = 0;
     always @(inNumber) begin //перебор остатков деления на 3
         #5
-        if((i == 0 && outValue) || (i != 0 && ~outValue)) $display("Success!");
-        else $display("Jopa!");
-        i = i + 1;
-        if(i == 3) i = 0;
+        if(inNumber % 3 == 0) $display("Success!");
+        else begin
+            $display("Jopa!");
+            status = -1;
+        end
     end
 
     initial begin
@@ -26,7 +27,12 @@ module test_module;
     end
 
     initial begin
-        #500 $finish();
+        #3000
+        if(status == -1)
+            $display("There are errors!!!");
+        else if(status == 0)
+            $display("норм");
+        $finish();
     end
 
     initial begin

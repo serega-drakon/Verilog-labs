@@ -1,27 +1,30 @@
-module pulse_gen(
-
+module pulse_gen#(
+    parameter BIN_SIZE = 8
+)(
     input wire rst,
     input wire clk,
-    input wire [7:0] countIn,
+    input wire [7:0] countInByTwo, // на вход частота в два раза меньше требуемой
     output wire out
 );
 
-    reg [7:0] num;  //я не придумал как его назвать лучше... // эт кол-во отсчитанных тактов
-    reg [7:0] count;
+    reg [BIN_SIZE - 1:0] num; // эт кол-во отсчитанных тактов
+    reg [BIN_SIZE - 1:0] countByTwo;
     assign out = (num == 0) ? 1 : 0;
 
-    always @(clk) begin
+    always @(posedge clk) begin
         if(rst) begin
-            count = countIn;
-            num = 0;
+            countByTwo <= countInByTwo;
+            num <= 0;
         end
         else begin
-            num = num + 1;
+            if(num + 1 == countByTwo) begin
+                num <= 0;
+            end
+            else
+                num <= num + 1;
         end
 
-        if(num == count) begin
-            num = 0;
-        end
+
     end
 
 endmodule

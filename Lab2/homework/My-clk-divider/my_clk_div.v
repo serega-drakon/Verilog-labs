@@ -1,27 +1,28 @@
-module my_clk_div( //крутые челики сразу общий вариант делителя делают B)
-
+module my_clk_div #(
+    parameter BIN_SIZE = 8
+)(
     input wire rst,
     input wire clk,
-    input wire [7:0] divCountIn,
+    input wire [BIN_SIZE - 1:0] divCntInByTwo, // на вход частота в два раза меньше требуемой
     output reg div
 );
 
-    reg [7:0] divReg;
-    reg [7:0] divCount;
+    reg [BIN_SIZE - 1:0] divReg;
+    reg [BIN_SIZE - 1:0] divCntByTwo;
 
-    always @(clk) begin
+    always @(posedge clk) begin
         if(rst) begin
-            divCount = divCountIn;
-            divReg = 0;
-            div = 0;
+            divCntByTwo <= divCntInByTwo;
+            divReg <= 0;
+            div <= 0;
         end
         else begin
-            divReg = divReg + 1;
-        end
-
-        if(divReg == divCount) begin
-            divReg = 0;
-            div = ~div;
+            if(divReg + 1 == divCntByTwo) begin
+                divReg <= 0;
+                div <= ~div;
+            end
+            else
+                divReg <= divReg + 1;
         end
     end
 

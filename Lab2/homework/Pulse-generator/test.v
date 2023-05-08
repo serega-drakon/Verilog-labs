@@ -27,13 +27,13 @@ module test;
 
     reg [7:0] countIn;
     initial begin
-        countIn <= 8'd5;
-        #400 countIn <= 8'd6;
-        #400 countIn <= 8'd7;
+        countIn <= 8'd2;
+        #400 countIn <= 8'd3;
+        #400 countIn <= 8'd4;
     end
 
     always begin
-        #10 clk = ~clk;
+        #10 clk <= ~clk;
     end
 
     //module itself

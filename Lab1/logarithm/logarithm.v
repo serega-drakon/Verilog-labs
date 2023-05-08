@@ -11,7 +11,7 @@ module logarithm (  //это моя первая версия
     end
 endmodule
 
-module logarithm_better #(
+module logarithm_better_old #(
     parameter BIN_SIZE = 8,
     parameter BOUT_SIZE = 3
 )(
@@ -30,7 +30,23 @@ module logarithm_better #(
 
 endmodule
 
-// протестированны будут оба
+module logarithm_better #( //Исправил
+    parameter BIN_SIZE = 8,
+    parameter BOUT_SIZE = 3
+)(
+    input wire [BIN_SIZE - 1:0] inVector,
+    output wire [BOUT_SIZE - 1:0] outNumber
+);
 
+    wire [BOUT_SIZE - 1:0] midNumber  [BIN_SIZE - 1:0];
+    assign midNumber[0] = 0;
 
-//я просто ненавижу дублировать код
+    genvar i;
+    generate for(i = 1; i < BIN_SIZE; i = i + 1) begin : loop
+        assign midNumber[i] = (inVector[i]) ? i[BOUT_SIZE - 1:0] : midNumber[i - 1];
+    end
+    endgenerate
+
+    assign outNumber = midNumber[BIN_SIZE - 1];
+
+endmodule
