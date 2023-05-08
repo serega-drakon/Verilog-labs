@@ -1,13 +1,12 @@
 module if_recursive_call #(
     parameter i = 7,
     parameter BOUT_SIZE = 3
-)
-    (
-        input wire [i:0] inVector,
-        input wire [BOUT_SIZE - 1:0] inNumber, //нужен для передачи данных в рекурсии
-        output wire [BOUT_SIZE - 1:0] outNumberRec,
-        output wire [BOUT_SIZE - 1:0] outNumber
-    );
+)(
+    input wire [i:0] inVector,
+    input wire [BOUT_SIZE - 1:0] inNumber, //нужен для передачи данных в рекурсии
+    output wire [BOUT_SIZE - 1:0] outNumberRec,
+    output wire [BOUT_SIZE - 1:0] outNumber
+);
 
     assign outNumberRec = (inVector[i] && (inNumber == 0)) ? i[BOUT_SIZE - 1 : 0] : inNumber;
 
