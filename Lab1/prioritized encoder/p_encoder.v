@@ -29,9 +29,9 @@ module p_encoder_gen_for(
         begin : loop
             if(inVector[i] && ~found)
             begin
-                outNumber <= i;
-                    found <= 1;
-            end
+                outNumber <= i;     //хотя мб это не совсем корректно
+                    found <= 1;     //результат работы мб зависит от синтеза
+            end                     //но вроде как работает
         end
     end
     endgenerate
