@@ -40,9 +40,8 @@ module div_checker_2(   //если пояснить чисто на языке �
         ((reminder_1[1] ^ reminder_1[0]) == 2'b11) ? 2'b00 :
             (reminder_1[1][1] && reminder_1[0][1]) ? 2'b01 : reminder_1[1] + reminder_1[0];
 
-    //делаем то же самое, но уже теряем ненужную информацию
     assign outValue =
-        ((reminder_2[1] + reminder_2[0] == 0) || (reminder_2[1] + reminder_2[0] == 3)) ? 1 : 0 ;
+        ((reminder_2[1] + reminder_2[0] == 3'd0) || (reminder_2[1] + reminder_2[0] == 3'd3)) ? 1 : 0 ;
 
 endmodule   //не стал запариваться с generate
 
