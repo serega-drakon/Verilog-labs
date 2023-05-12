@@ -23,24 +23,11 @@ module memory_module #(
     endfunction
 
     reg [DATA_WIDTH - 1 : 0] mem_cell [MAX_ADDR - 1 : 0];
-    reg rd_flag;
-    reg [ADDRSIZE - 1 : 0] rd_last_addr;
-    reg [DATA_WIDTH - 1 : 0] rd_last_value;
 
     always @(posedge clk) begin
-        if(rd_flag) begin
-            rd_data <= rd_last_value;
-        end
-        else if(!rd_en) begin
-            rd_data <= 0;
-        end
 
         if(rd_en) begin
-            rd_last_value <= mem_cell[rd_addr];
-            rd_flag <= 1;
-        end
-        else begin
-            rd_flag <= 0;
+            rd_data <= mem_cell[rd_addr];
         end
 
         if(wr_en) begin
