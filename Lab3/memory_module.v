@@ -29,7 +29,9 @@ module memory_module #(
         if(rd_en) begin
             rd_data <= mem_cell[rd_addr];
         end
+    end
 
+    always @(posedge clk) begin
         if(wr_en) begin
             mem_cell[wr_addr] <= wr_data;
         end
