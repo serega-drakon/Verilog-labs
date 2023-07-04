@@ -68,7 +68,7 @@ module fifo #(
     assign onlyWR = !reset && !rd_en && wr_en;
 
     always @(posedge clk) begin
-        if(onlyWR && len < FIFO_DEPTH) //типа первый элемент загружен
+        if(onlyWR && len < FIFO_DEPTH)
                 len <= len + 1;
     end
 
