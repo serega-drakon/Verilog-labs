@@ -12,7 +12,7 @@ module fifo #(
     output reg rd_val
 );
     reg [DATA_WIDTH - 1 : 0] array [FIFO_DEPTH - 1 : 0];
-    reg [$clog2(FIFO_DEPTH) : 0] len;
+    reg [$clog2(FIFO_DEPTH + 1) - 1 : 0] len;
 
     assign wr_ready = !(len == FIFO_DEPTH);
 
