@@ -44,14 +44,27 @@ vvp название_симуляции
 командную строку.
 
 ### Поддержка правописания языка Verilog
-Для этого нужно установить плагин наподобие `SystemVerilog` или более нового 
-`Verilog Language Support` (первым я пользовался, работает не идеально, мягко говоря,
-второй собираюсь потестить).\
-<img src="pictures/plugins.png" width="200" align="center">\
+Для этого нужно установить плагин наподобие `SystemVerilog`[(ссылка)][sys_verilog] или 
+более нового `Verilog Language Support`[(ссылка)][ver_lang_sup] (первым я пользовался, работает 
+не идеально, мягко говоря, второй собираюсь протестить). Для студентов все это бесплатно, 
+просто регистрируете аккаунт, получаете студенческую лицензию JetBrains и игнорируя стоимость
+любой подписки на плагин покупаете его (там не сразу видно, но на моменте покупки уже
+показывает, что плагин на халяву).
 
+<img src="pictures/plugins.png" width="200" alt="plugins">
+
+Если плагина не видно во встроенном в IDE магазине или у него не видно последних обновлений, 
+то просто качаете его с сайта и распаковываете в папку с плагинами:
+![plugin_install.png](pictures/plugin_install.png)
+
+Теперь при создании файла типа `*.v` или `*.sv` подключается проверка правописания, ура!
+![plugin_usage_verilog.png](pictures/plugin_usage_verilog.png)
+### 
 
 [icarus_win]: http://bleyer.org/icarus/
 [icarus_lin]: https://onstartup.ru/jelektronika/iverilog/
 [icarus_mac]: https://formulae.brew.sh/formula/icarus-verilog#default
 [brew_mac]: https://brew.sh
 [gtkwave]: https://gtkwave.sourceforge.net
+[sys_verilog]: https://plugins.jetbrains.com/plugin/10695-systemverilog
+[ver_lang_sup]: https://plugins.jetbrains.com/plugin/21813-verilog-language-support
