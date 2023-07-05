@@ -1,4 +1,4 @@
-`include "fifo.v"
+`include "filo.v"
 module test;
 
     reg clk = 1;

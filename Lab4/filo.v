@@ -1,4 +1,4 @@
-module fifo #(
+module filo #(
     parameter FIFO_DEPTH = 8,
     parameter DATA_WIDTH = 8
 )(
