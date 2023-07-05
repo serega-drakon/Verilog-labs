@@ -34,7 +34,7 @@ vvp название_симуляции
 
 ##### Фоточки с примером вывода:
 
-<img src="pictures/example_icarus_1.png" width="700" alt="example"/>
+<img src="pictures/example_icarus_1.png" width="700" alt="example">\
 <img src="pictures/example_icarus_2.png" width="700" alt="example">
 
 ## Использование вместе с IDE на примере IntelliJ IDEA
@@ -81,7 +81,7 @@ _bash-script_ для того, чтобы при нажатии на кнопк�
 ![ver_file_add.png](pictures/ver_file_add.png)
 
 Сейчас настроим "компилятор", открываем настройки конфигураций запуска:
-![run_configs_open.png](pictures/run_configs_open1.png)
+![run_configs_open.png](pictures/run_configs_open1.png)\
 
 ![img.png](pictures/run_configs_open2.png)
 
