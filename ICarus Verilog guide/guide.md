@@ -32,9 +32,10 @@ vvp название_симуляции
 ````
 Полученный файл формата `*.vcd` можно открыть в **GTKWave**, и дальше уже, думаю, все понятно.
 
-Фоточки с примером вывода:\
-<img src="pictures/example_icarus_1.png" width="600"/>
-<img src="pictures/example_icarus_2.png" width="600">
+##### Фоточки с примером вывода:
+
+<img src="pictures/example_icarus_1.png" width="700" alt="sdad"/>
+<img src="pictures/example_icarus_2.png" width="700" alt="asdasd">
 
 ## Использование вместе с IDE на примере IntelliJ Idea
 
