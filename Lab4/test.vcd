@@ -1,5 +1,5 @@
 $date
-	Wed Jul  5 23:51:44 2023
+	Thu Jul  6 00:01:02 2023
 $end
 $version
 	Icarus Verilog
@@ -17,7 +17,7 @@ $var reg 1 & reset $end
 $var reg 8 ' wr_data [7:0] $end
 $var reg 1 ( wr_en $end
 $var integer 32 ) i [31:0] $end
-$scope module fifo1 $end
+$scope module filo1 $end
 $var wire 1 $ clk $end
 $var wire 1 % rd_en $end
 $var wire 1 & reset $end
