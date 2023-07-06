@@ -17,8 +17,14 @@ module filo #(
     assign wr_ready = !(len == FILO_DEPTH);
 
     always @(posedge clk) begin
-        if(rd_en)
+        if(reset) begin
+            rd_data <= 0;
+            rd_val <= 0;
+        end
+        else if(rd_en) begin
             rd_data <= array[0];
+            rd_val <= !(len == 0);
+        end
     end
 
     generate if(FILO_DEPTH > 1) begin : ifgenStack
@@ -66,11 +72,6 @@ module filo #(
         end
     end
     endgenerate
-
-    always @(posedge clk) begin
-        if(rd_en)
-            rd_val <= !(len == 0);
-    end
 
     always  @(posedge clk) begin
         if(reset) begin
