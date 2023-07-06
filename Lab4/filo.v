@@ -11,17 +11,17 @@ module filo #(
     output wire wr_ready,
     output reg rd_val
 );
-    reg [DATA_WIDTH - 1 : 0] array [FIFO_DEPTH - 1 : 0];
-    reg [$clog2(FIFO_DEPTH + 1) - 1 : 0] len;
+    reg [DATA_WIDTH - 1 : 0] array [FILO_DEPTH - 1 : 0];
+    reg [$clog2(FILO_DEPTH + 1) - 1 : 0] len;
 
-    assign wr_ready = !(len == FIFO_DEPTH);
+    assign wr_ready = !(len == FILO_DEPTH);
 
     always @(posedge clk) begin
         if(rd_en)
             rd_data <= array[0];
     end
 
-    generate if(FIFO_DEPTH > 1) begin : ifgenStack
+    generate if(FILO_DEPTH > 1) begin : ifgenStack
         always @(posedge clk) begin
             if(wr_en) begin
                 array[0] <= wr_data;
@@ -34,7 +34,7 @@ module filo #(
             end
         end
     end
-    else if(FIFO_DEPTH == 1) begin : ifgenSimpleStack
+    else if(FILO_DEPTH == 1) begin : ifgenSimpleStack
         always  @(posedge clk) begin
             if(wr_en) begin
                 array[0] <= wr_data;
@@ -47,8 +47,8 @@ module filo #(
     endgenerate
 
     genvar i;
-    generate for(i = 1; i < FIFO_DEPTH; i = i + 1) begin : loopArray
-        if(i != FIFO_DEPTH - 1) begin
+    generate for(i = 1; i < FILO_DEPTH; i = i + 1) begin : loopArray
+        if(i != FILO_DEPTH - 1) begin
             always @(posedge clk)
                 if(reset)
                     array[i] <= 0;
@@ -81,7 +81,7 @@ module filo #(
         end
         else if(!wr_en && rd_en && len > 0)
             len <= len - 1;
-        else if(wr_en && !rd_en && len < FIFO_DEPTH)
+        else if(wr_en && !rd_en && len < FILO_DEPTH)
             len <= len + 1;
         else if(wr_en && rd_en && len == 0)
             len <= 1;
