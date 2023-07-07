@@ -1,5 +1,5 @@
-module filo #(
-    parameter FILO_DEPTH = 8,
+module lifo#(
+    parameter LIFO_DEPTH = 8,
     parameter DATA_WIDTH = 8
 )(
     input wire clk,
@@ -9,12 +9,14 @@ module filo #(
     input wire [DATA_WIDTH - 1 : 0] wr_data,
     output reg [DATA_WIDTH - 1 : 0] rd_data,
     output wire wr_ready,
+    output wire rd_ready,
     output reg rd_val
 );
-    reg [DATA_WIDTH - 1 : 0] array [FILO_DEPTH - 1 : 0];
-    reg [$clog2(FILO_DEPTH + 1) - 1 : 0] len;
+    reg [DATA_WIDTH - 1 : 0] array [LIFO_DEPTH- 1 : 0];
+    reg [$clog2(LIFO_DEPTH + 1) - 1 : 0] len;
 
-    assign wr_ready = !(len == FILO_DEPTH);
+    assign wr_ready = len < LIFO_DEPTH;
+    assign rd_ready = len > 0;
 
     always @(posedge clk) begin
         if(reset) begin
@@ -23,41 +25,37 @@ module filo #(
         end
         else if(rd_en) begin
             rd_data <= array[0];
-            rd_val <= !(len == 0);
+            rd_val <= rd_ready;
         end
     end
 
-    generate if(FILO_DEPTH > 1) begin : ifgenStack
+    generate if(LIFO_DEPTH > 1) begin : ifgenStack
         always @(posedge clk) begin
-            if(wr_en) begin
+            if(reset)
+                ;
+            if(wr_en)
                 array[0] <= wr_data;
-            end
-            else if(reset) begin
-                array[0] <= 0;
-            end
-            else if(rd_en) begin
+            else if(rd_en)
                 array[0] <= array[1];
-            end
+
         end
     end
-    else if(FILO_DEPTH == 1) begin : ifgenSimpleStack
+    else if(LIFO_DEPTH == 1) begin : ifgenSimpleStack
         always  @(posedge clk) begin
-            if(wr_en) begin
+            if(reset)
+                ;
+            else if(wr_en)
                 array[0] <= wr_data;
-            end
-            else if(reset) begin
-                array[0] <= 0;
-            end
         end
     end
     endgenerate
 
     genvar i;
-    generate for(i = 1; i < FILO_DEPTH; i = i + 1) begin : loopArray
-        if(i != FILO_DEPTH - 1) begin
+    generate for(i = 1; i < LIFO_DEPTH; i = i + 1) begin : loopArray
+        if(i != LIFO_DEPTH- 1) begin
             always @(posedge clk)
                 if(reset)
-                    array[i] <= 0;
+                    ;
                 else if(wr_en && !rd_en)
                     array[i] <= array[i - 1];
                 else if(!wr_en && rd_en)
@@ -66,7 +64,7 @@ module filo #(
         else begin
             always @(posedge clk)
                 if(reset)
-                    array[i] <= 0;
+                    ;
                 else if(wr_en && !rd_en)
                     array[i] <= array[i - 1];
         end
@@ -74,15 +72,11 @@ module filo #(
     endgenerate
 
     always  @(posedge clk) begin
-        if(reset) begin
-            if(wr_en)
-                len <= 1;
-            else
-                len <= 0;
-        end
+        if(reset)
+            len <= 0;
         else if(!wr_en && rd_en && len > 0)
             len <= len - 1;
-        else if(wr_en && !rd_en && len < FILO_DEPTH)
+        else if(wr_en && !rd_en && wr_ready)
             len <= len + 1;
         else if(wr_en && rd_en && len == 0)
             len <= 1;

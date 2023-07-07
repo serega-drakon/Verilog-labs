@@ -9,43 +9,14 @@ module fifo #(
     input wire [DATA_WIDTH - 1 : 0] wr_data,
     output reg [DATA_WIDTH - 1 : 0] rd_data,
     output wire wr_ready,
+    output wire rd_ready,
     output reg rd_val
 );
     reg [DATA_WIDTH - 1 : 0] array [FIFO_DEPTH - 1 : 0];
-    reg flag_val [FIFO_DEPTH - 1 : 0];
+    reg [$clog2(FIFO_DEPTH + 1) - 1 : 0] len;
 
-    assign wr_ready = rd_en | ~flag_val[FIFO_DEPTH - 1];
-
-    always @(posedge clk) begin
-        if(wr_en) begin
-            array[0] <= wr_data;
-            flag_val[0] <= 1;
-        end
-        else if(reset) begin
-            array[0] <= 0;
-            flag_val[0] <= 0;
-        end
-        else begin
-            if(rd_en) begin
-                flag_val[0] <= 0;
-            end
-        end
-    end
-
-    genvar i;
-    generate for(i = 1; i < FIFO_DEPTH; i = i + 1) begin : loopArray
-        always @(posedge clk) begin
-            if(reset) begin
-                array[i] <= 0;
-                flag_val[i] <= 0;
-            end
-            else if(wr_en || rd_en) begin
-                array[i] <= array[i - 1];
-                flag_val[i] <= flag_val[i - 1];
-            end
-        end
-    end
-    endgenerate
+    assign wr_ready = len < FIFO_DEPTH;
+    assign rd_ready = len > 0;
 
     always @(posedge clk) begin
         if(reset) begin
@@ -53,8 +24,55 @@ module fifo #(
             rd_val <= 0;
         end
         else if(rd_en) begin
-            rd_data <= array[FIFO_DEPTH - 1];
-            rd_val <= flag_val[FIFO_DEPTH - 1];
+            rd_data <= array[len - rd_ready]; //при len = 0 считаются мусорные данные из 0 ячейки
+            rd_val <= rd_ready;
         end
     end
-    endmodule
+
+    generate if(FIFO_DEPTH > 1) begin : ifgenStack
+        always @(posedge clk) begin
+            if(reset)
+                ;
+            else if(wr_en)
+                array[0] <= wr_data;
+        end
+    end
+    else if(FIFO_DEPTH == 1) begin : ifgenSimpleStack
+        always  @(posedge clk)
+            if(reset)
+                ;
+            else if(wr_en)
+                array[0] <= wr_data;
+    end
+    endgenerate
+
+    genvar i;
+    generate for(i = 1; i < FIFO_DEPTH; i = i + 1) begin : loopArray
+        if(i != FIFO_DEPTH - 1) begin
+            always @(posedge clk)
+                if(reset)
+                    ;
+                else if(wr_en)
+                    array[i] <= array[i - 1];
+        end
+        else begin
+            always @(posedge clk)
+                if(reset)
+                    ;
+                else if(wr_en)
+                    array[i] <= array[i - 1];
+        end
+    end
+    endgenerate
+
+    always  @(posedge clk) begin
+        if(reset)
+            len <= 0;
+        else if(!wr_en && rd_en && len > 0)
+            len <= len - 1;
+        else if(wr_en && !rd_en && wr_ready)
+            len <= len + 1;
+        else if(wr_en && rd_en && len == 0)
+            len <= 1;
+    end
+endmodule

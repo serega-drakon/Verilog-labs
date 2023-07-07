@@ -1,4 +1,4 @@
-`include "lifo.v"
+`include "fifo.v"
 module test;
 
     reg clk = 1;
@@ -10,11 +10,10 @@ module test;
     reg [7 : 0] wr_data;
     wire [7 : 0] rd_data;
     wire wr_ready;
-    wire rd_ready;
     wire rd_val;
 
 
-    lifo lifo1(clk, reset, rd_en, wr_en, wr_data, rd_data, wr_ready, rd_ready, rd_val);
+    fifo fifo1(clk, reset, rd_en, wr_en, wr_data, rd_data, wr_ready, rd_val);
 
     integer i;
     initial begin
@@ -37,14 +36,14 @@ module test;
         #100;
         wr_en <= 1;
         rd_en <= 1;
-        for(i = 9; i >= 1; i = i - 1) begin
+        for(i = 8; i >= 0; i = i - 1) begin
             wr_data <= i;
             #10;
         end
         wr_en <= 0;
         rd_en <= 0;
 
-        #100;
+        #100; //кусок от другого теста
         wr_en <= 1;
         rd_en <= 1;
         reset <= 1;
