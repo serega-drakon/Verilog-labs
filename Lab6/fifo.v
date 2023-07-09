@@ -12,8 +12,10 @@ module fifo #(
     output wire rd_ready,
     output reg rd_val
 );
-    function integer next_pos; // Си-шный style
-        input integer pos;
+    localparam POS_WIDTH = $clog2(FIFO_DEPTH);
+
+    function [POS_WIDTH - 1 : 0] next_pos; // Си-шный style
+        input [POS_WIDTH - 1 : 0] pos;
         begin
             if(pos < FIFO_DEPTH - 1)
                 next_pos = pos + 1;
@@ -23,8 +25,8 @@ module fifo #(
     endfunction
 
     reg [DATA_WIDTH - 1 : 0] array [FIFO_DEPTH - 1 : 0];
-    reg [$clog2(FIFO_DEPTH + 1) - 1 : 0] wr_pos;
-    reg [$clog2(FIFO_DEPTH + 1) - 1 : 0] rd_pos;
+    reg [POS_WIDTH - 1 : 0] wr_pos;
+    reg [POS_WIDTH - 1 : 0] rd_pos;
     reg filled;
 
     assign wr_ready = !filled || wr_pos != rd_pos;
