@@ -59,7 +59,7 @@ module fifo #(
                     rd_pos <= next_pos(rd_pos);
             end
             if(rd_en) begin
-                if(rd_ready || !wr_en) // случай с зажатым rd и wr при filled = 0 и нулевой длине
+                if(rd_ready || !wr_en) // случай с зажатым rd и wr при нулевой длине
                     rd_pos <= next_pos(rd_pos);
                 if(!rd_ready && !wr_en)
                     wr_pos <= next_pos(wr_pos);
