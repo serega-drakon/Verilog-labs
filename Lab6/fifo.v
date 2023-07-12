@@ -7,73 +7,62 @@ module fifo #(
     input wire rd_en,
     input wire wr_en,
     input wire [DATA_WIDTH - 1 : 0] wr_data,
-    output reg [DATA_WIDTH - 1 : 0] rd_data,
+    output wire [DATA_WIDTH - 1 : 0] rd_data,
     output wire wr_ready,
     output wire rd_ready,
     output reg rd_val
 );
     localparam POS_WIDTH = $clog2(FIFO_DEPTH);
 
-    function [POS_WIDTH - 1 : 0] next_pos; // Си-шный style
-        input [POS_WIDTH - 1 : 0] pos;
-        begin
-            if(pos < FIFO_DEPTH - 1)
-                next_pos = pos + 1;
-            else
-                next_pos = 0;
-        end
-    endfunction
-
     reg [DATA_WIDTH - 1 : 0] array [FIFO_DEPTH - 1 : 0];
     reg [POS_WIDTH - 1 : 0] wr_pos;
     reg [POS_WIDTH - 1 : 0] rd_pos;
     reg filled;
 
-    assign wr_ready = !filled || wr_pos != rd_pos;
-    assign rd_ready = filled || rd_pos != wr_pos;
+    wire [POS_WIDTH - 1 : 0] wr_next_pos;
+    wire [POS_WIDTH - 1 : 0] rd_next_pos;//больше веревок!!!!!!
+    assign wr_next_pos = (wr_pos < FIFO_DEPTH - 1) ? wr_pos + 1 : 0;
+    assign rd_next_pos = (rd_pos < FIFO_DEPTH - 1) ? rd_pos + 1 : 0;
+
+    assign wr_ready = ~filled | wr_pos != rd_pos;
+    assign rd_ready = filled | rd_pos != wr_pos;
+
+    assign rd_data = array[rd_pos];
 
     always @(posedge clk) begin
-        if(reset) begin
-            rd_data <= 0;
-            rd_val <= 0;
-        end
-        else begin
-            if(wr_en)
-                array[wr_pos] <= wr_data;
-            if(rd_en) begin
-                rd_data <= array[rd_pos];
-                rd_val <= rd_ready;
-            end
-        end
+        if(reset)
+            array[wr_pos] <= array[wr_pos];
+        else
+            array[wr_pos] <= (wr_en & wr_ready) ? wr_data : array[wr_pos];
     end
 
     always @(posedge clk) begin
-        if(reset) begin
+        if(reset)
+            rd_val <= 0;
+        else
+            rd_val <= (rd_en) ? rd_ready : rd_val;
+    end
+
+    always @(posedge clk) begin
+        if(reset)
             wr_pos <= 0;
+        else
+            wr_pos <= (wr_en & wr_ready) ? wr_next_pos : wr_pos;
+    end
+
+    always @(posedge clk) begin
+        if(reset)
             rd_pos <= 0;
-        end
-        else begin
-            if(wr_en) begin
-                wr_pos <= next_pos(wr_pos);
-                if(!wr_ready && !rd_en)
-                    rd_pos <= next_pos(rd_pos);
-            end
-            if(rd_en) begin
-                if(rd_ready || !wr_en) // случай с зажатым rd и wr при нулевой длине
-                    rd_pos <= next_pos(rd_pos);
-                if(!rd_ready && !wr_en)
-                    wr_pos <= next_pos(wr_pos);
-            end
-        end
+        else
+            rd_pos <= (rd_en & rd_ready) ? rd_next_pos : rd_pos;
     end
 
     always @(posedge clk) begin
         if(reset)
             filled <= 0;
-        else if(wr_en && wr_pos == rd_pos)
-            filled <= 1;
-        else if(rd_en && wr_pos == next_pos(rd_pos))
-            filled <= 0;
+        else
+            filled <= (wr_en & wr_pos == rd_pos) ? 1 :
+            (rd_en & wr_pos == rd_next_pos) ? 0 : filled;
     end
 
 endmodule
