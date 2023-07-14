@@ -1,4 +1,4 @@
-`include "fifo.v"
+`include "fifo_cycle.v"
 module test;
 
     reg clk = 1;
@@ -13,7 +13,7 @@ module test;
     wire rd_ready;
     wire rd_val;
 
-    fifo fifo1(clk, reset, rd_en, wr_en, wr_data, rd_data, wr_ready, rd_ready, rd_val);
+    fifo_cycle fifo1(clk, reset, rd_en, wr_en, wr_data, rd_data, wr_ready, rd_ready, rd_val);
 
     integer i;
     initial begin
