@@ -47,7 +47,7 @@ module test;
             for(j = 0; j < k; j = j + 1) begin
                 #10;
                 if((rd_data_1 != rd_data_2 && rd_ready_1 == 1 && rd_ready_2 == 1) // ну то есть на веревке валидные данные висят
-                    || rd_val_1 != rd_val_2 || rd_ready_1 != rd_ready_2) begin //а тут понятно
+                    || rd_val_1 != rd_val_2 || rd_ready_1 != rd_ready_2 || wr_ready_1 != wr_ready_2) begin //а тут понятно
                     status = 0;
                 end
             end
