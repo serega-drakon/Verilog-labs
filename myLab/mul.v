@@ -63,6 +63,8 @@ module mul #( //unsigned случай
         mul_simple_step (PART_DATA_WIDTH [PDW_WIDTH - 1 : 0], step, step_mul_PDW);
     end
     endgenerate
+    // я походу смог доказать по индукции, что при PART_DATA_WIDTH >= 4: PDW_WIDTH < PART_DATA_WIDTH !
+    // значит все по-кайфу
 
     assign rd_data = result;
 
