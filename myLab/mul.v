@@ -64,7 +64,6 @@ module mul #( //unsigned случай
     end
     endgenerate
 
-
     assign rd_data = result;
 
     always @(posedge clk)
