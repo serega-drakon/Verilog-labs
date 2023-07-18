@@ -52,7 +52,7 @@ module mul #( //unsigned случай
 
     //я запрещаю умножать
     localparam PDW_WIDTH = $clog2(PART_DATA_WIDTH + 1);
-    // STEP_WIDTH и PDW_WIDTH предполагаются не большими PART_DATA_WIDTH
+    // STEP_WIDTH или PDW_WIDTH предполагается не большим PART_DATA_WIDTH
     // для того чтобы цепь была более параллельной, а не последовательной:
     generate if(STEP_WIDTH < PDW_WIDTH) begin : gen_if_compare
     mul_simple #(.DATA_1_WIDTH(STEP_WIDTH), .DATA_2_WIDTH(PDW_WIDTH), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
