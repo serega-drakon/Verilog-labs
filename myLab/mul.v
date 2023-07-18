@@ -3,7 +3,7 @@
 module mul #( //unsigned случай
     parameter DATA_WIDTH = 32,
     parameter RES_WIDTH = DATA_WIDTH * 2,
-    parameter PART_DATA_WIDTH = 8
+    parameter PART_DATA_WIDTH = 8 //размер кусочков, на которые разобьем второй операнд в произведении
 )(
     input wire clk,
     input wire reset,
@@ -53,6 +53,7 @@ module mul #( //unsigned случай
     //я запрещаю умножать
     localparam PDW_WIDTH = $clog2(PART_DATA_WIDTH + 1);
     // для того чтобы цепь была более параллельной, а не последовательной
+    // STEP_WIDTH и PDW_WIDTH предполагаются достаточно малыми по сравнению с PART_DATA_WIDTH
     generate if(STEP_WIDTH < PDW_WIDTH) begin : gen_if_compare
     mul_simple #(.DATA_1_WIDTH(STEP_WIDTH), .DATA_2_WIDTH(PDW_WIDTH), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
         mul_simple_step (step, PART_DATA_WIDTH [$clog2(PART_DATA_WIDTH + 1) - 1 : 0], step_mul_PDW);
@@ -62,6 +63,8 @@ module mul #( //unsigned случай
         mul_simple_step (PART_DATA_WIDTH [PDW_WIDTH - 1 : 0], step, step_mul_PDW);
     end
     endgenerate
+
+
     assign rd_data = result;
 
     always @(posedge clk)
