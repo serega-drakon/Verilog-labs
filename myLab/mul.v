@@ -54,9 +54,9 @@ module mul #( //unsigned случай
     localparam PDW_WIDTH = $clog2(PART_DATA_WIDTH + 1);
     // STEP_WIDTH или PDW_WIDTH предполагается не большим PART_DATA_WIDTH
     // для того чтобы цепь была более параллельной, а не последовательной:
-    generate if(STEP_WIDTH < PDW_WIDTH) begin : gen_if_compare
+    generate if(PDW_WIDTH < STEP_WIDTH) begin : gen_if_compare
     mul_simple #(.DATA_1_WIDTH(STEP_WIDTH), .DATA_2_WIDTH(PDW_WIDTH), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
-        mul_simple_step (step, PART_DATA_WIDTH [$clog2(PART_DATA_WIDTH + 1) - 1 : 0], step_mul_PDW);
+        mul_simple_step (step, PART_DATA_WIDTH [PDW_WIDTH - 1 : 0], step_mul_PDW);
     end
     else begin : gen_else_compare
     mul_simple #(.DATA_1_WIDTH(PDW_WIDTH), .DATA_2_WIDTH(STEP_WIDTH), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
