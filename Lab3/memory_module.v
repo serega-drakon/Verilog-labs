@@ -25,7 +25,6 @@ module memory_module #(
     reg [DATA_WIDTH - 1 : 0] mem_cell [MAX_ADDR - 1 : 0];
 
     always @(posedge clk) begin
-
         if(rd_en) begin
             rd_data <= mem_cell[rd_addr];
         end

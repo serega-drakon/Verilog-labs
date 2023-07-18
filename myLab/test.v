@@ -1,42 +1,45 @@
-//`include "shift_reg.v"
+`include "mul.v"
 
 module test;
 
-    reg clk = 0;
+    reg clk = 1;
     always #5 clk = ~clk;
 
-    reg wr_en = 0;
-    reg [5 : 0] wr_addr;
-    reg [7 : 0] wr_data;
-    wire [7 : 0] rd_data;
+    localparam DATA_WIDTH = 32;
+    localparam RES_WIDTH = DATA_WIDTH * 2;
+    localparam PART_DATA_WIDTH = 8;
 
-    memory_module mem1(clk, rd_en, rd_addr, wr_en, wr_addr, wr_data, rd_data);
+    reg reset;
+    reg rd_en;
+    reg wr_en;
+    reg [DATA_WIDTH - 1 : 0] wr_data_1;
+    reg [DATA_WIDTH - 1 : 0] wr_data_2;
+    wire [RES_WIDTH - 1 : 0] rd_data;
+    wire wr_ready;
+    wire rd_ready;
+    wire rd_val;
 
-    integer i;
+    mul #(.DATA_WIDTH(DATA_WIDTH), .RES_WIDTH(RES_WIDTH), .PART_DATA_WIDTH(PART_DATA_WIDTH))
+        mul1 (clk, reset, rd_en, wr_en, wr_data_1, wr_data_2, rd_data, wr_ready, rd_ready, rd_val);
+
     initial begin
+        wr_en <= 0;
+        rd_en <= 0;
+        reset <= 1;
+        #10 reset <= 0;
         wr_en <= 1;
-        for(i = 0; i < 64; i = i + 1) begin
-            #10 wr_addr <= i;
-            wr_data <= i;
-        end
-        wr_en <= 0; //значение на 0x3F не запишется! да и фиг с ним, посмотрю чо будет
-        rd_en <= 1;
-        for(i = 0; i < 64; i = i + 1) begin
-            rd_addr <= i;
-            #10;
-        end
-        #10
-            rd_en <= 0;
+        wr_data_1 <= 32'h123456;
+        wr_data_2 <= 32'h123456;
+        #10 wr_en <= 0;
     end
-
     //dump settings
     initial begin
-        $monitor(rd_data);
+        $monitor(rd_data, " ", rd_ready, " ", rd_val);
     end
 
     initial begin
         $dumpfile("test.vcd");
-        $dumpvars(0, test);
+        $dumpvars(2, test);
     end
 
     initial begin
