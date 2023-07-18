@@ -51,9 +51,17 @@ module mul #( //unsigned случай
     wire [STEP_MUL_PDW_WIDTH - 1 : 0] step_mul_PDW;
 
     //я запрещаю умножать
-    mul_simple #(.DATA_1_WIDTH(STEP_WIDTH), .DATA_2_WIDTH($clog2(PART_DATA_WIDTH + 1)), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
+    localparam PDW_WIDTH = $clog2(PART_DATA_WIDTH + 1);
+    // для того чтобы цепь была более параллельной, а не последовательной
+    generate if(STEP_WIDTH < PDW_WIDTH) begin : gen_if_compare
+    mul_simple #(.DATA_1_WIDTH(STEP_WIDTH), .DATA_2_WIDTH(PDW_WIDTH), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
         mul_simple_step (step, PART_DATA_WIDTH [$clog2(PART_DATA_WIDTH + 1) - 1 : 0], step_mul_PDW);
-
+    end
+    else begin
+    mul_simple #(.DATA_1_WIDTH(PDW_WIDTH), .DATA_2_WIDTH(STEP_WIDTH), .RES_WIDTH(STEP_MUL_PDW_WIDTH))
+        mul_simple_step (PART_DATA_WIDTH [PDW_WIDTH - 1 : 0], step, step_mul_PDW);
+    end
+    endgenerate
     assign rd_data = result;
 
     always @(posedge clk)
