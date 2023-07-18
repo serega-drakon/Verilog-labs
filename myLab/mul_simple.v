@@ -1,4 +1,4 @@
-module mul_simple #(    //алгоритм умножения столбиком
+module mul_simple #(    //алгоритм умножения столбиком (unsigned)
     parameter DATA_1_WIDTH = 8,
     parameter DATA_2_WIDTH = DATA_1_WIDTH,
     parameter RES_WIDTH = DATA_1_WIDTH + DATA_2_WIDTH
@@ -22,9 +22,9 @@ module mul_simple #(    //алгоритм умножения столбиком
         if(i == 0)
             assign mid_data[i] = mul_by_digit[i];
         else
-            assign mid_data[i] = mid_data[i - 1] + mul_by_digit[i]; // сумматоры - опасно, могут возникать задержки
-    end
-    endgenerate
+            assign mid_data[i] = mid_data[i - 1] + mul_by_digit[i]; // сумматоры - опасно, могут возникать большие задержки
+    end             // поэтому буду разбивать второй операнд на малые части и умножать на часть второго целый первый
+    endgenerate     // ну то есть стремимся снизить DATA_2_WIDTH
 
     assign result = mid_data[DATA_2_WIDTH - 1];
 
