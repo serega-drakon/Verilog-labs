@@ -31,6 +31,9 @@ module test;
         wr_data_1 <= 32'h123456;
         wr_data_2 <= 32'h123456;
         #10 wr_en <= 0;
+        while (~rd_ready) #10;
+        rd_en <= 1;
+        #20 rd_en <= 0;
     end
     //dump settings
     initial begin
